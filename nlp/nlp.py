@@ -1,3 +1,7 @@
+import pickle
+
+from keras.preprocessing import sequence
+from keras.preprocessing.text import Tokenizer
 from sklearn.cluster import KMeans
 from sklearn.decomposition import NMF, LatentDirichletAllocation
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
@@ -44,3 +48,20 @@ for topic_idx, topic in enumerate(lda.components_):
     print(
         " ".join([feature_names[i] for i in topic.argsort()[: -n_top_words - 1 : -1]])
     )
+
+documents = [
+    "This is the first document.",
+    "This document is the second document.",
+    "And this is the third one",
+    "Is this the first document?",
+]
+
+tok = Tokenizer()
+tok.fit_on_texts(documents)
+mat_texts = tok.texts_to_matrix(documents, mode="tfidf")
+print(mat_texts)
+X = tok.texts_to_sequences(documents)
+
+padded = sequence.pad_sequences(X)
+print(X)
+print(padded)
